@@ -40,11 +40,21 @@ class Game:
                               self.movement[1] = True
                          if event.key == pygame.K_UP:
                               self.player.velocity[1] = -5
+                         if event.key == pygame.K_DOWN:   
+                              if self.player.interaction:
+                                        if(self.tilemap.tilemap[self.tilemap.last_tree]['collected']== False):
+                                             self.tilemap.tilemap[self.tilemap.last_tree]['collected'] = True
+                                             self.player.collect_fruit()
+                                             print(self.player.get_points())
+
                     if event.type == pygame.KEYUP:
                          if event.key == pygame.K_LEFT:
                               self.movement[0] = False
                          if event.key == pygame.K_RIGHT:
                               self.movement[1] = False
+                         if event.key == pygame.K_DOWN:
+                              self.player.interaction= False
+                    
                 self.screen.blit(pygame.transform.scale(self.display,self.screen.get_size()))
                 pygame.display.update()
                 self.clock.tick(60)

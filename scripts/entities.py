@@ -1,4 +1,5 @@
 import pygame
+import random
 
 class PhysicsEntity:
     def __init__(self, game, e_type, pos, size):
@@ -8,12 +9,15 @@ class PhysicsEntity:
         self.size = size
         self.velocity = [0,0]
         self.collisions = {'up': False, 'down' : False, 'right': False, 'left': False}
+        self.bag = []
+        self.interaction = False
 
     def rect(self):
         return pygame.Rect(self.pos[0],self.pos[1],self.size[0],self.size[1])
 
     def update(self, tilemap,movement=(0,0)):
         self.collisions = {'up': False, 'down' : False, 'right': False, 'left': False}
+        self.interaction= False
         frame_movement = (movement[0] + self.velocity[0], movement[1] + self.velocity[1])
         
         self.pos[0] += frame_movement[0]
@@ -43,6 +47,39 @@ class PhysicsEntity:
         self.velocity[1] = min(5,self.velocity[1] + 0.1)
         if self.collisions['down'] or self.collisions['up']:
             self.velocity[1] = 0
+        
+        for rect in tilemap.interaction_reacts_around(self.pos):
+            if entity_rect.colliderect(rect):
+                self.interaction=True
+                    
+                    
+                
 
     def render(self,surf):
         surf.blit(self.game.assets['player'], self.pos)
+
+    def collect_fruit(self):
+        new_fruit = FruitEntity(self).assign_value()
+        self.bag.append(new_fruit)
+
+    def get_points(self):
+        resume = 0
+        for fruit in self.bag:
+            resume+= fruit.value
+        return resume
+
+class FruitEntity:
+    def __init__(self,game):
+        self.game = game
+        self.value = 0
+
+    def assign_value(self):
+        list_values = [5,10,15]
+        self.value= random.choice(list_values)
+        return self
+    
+
+    
+    
+    
+        

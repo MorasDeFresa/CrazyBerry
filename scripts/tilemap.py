@@ -1,6 +1,7 @@
 import pygame
 NEIGHBOR_OFFSET = [(-1,0),(-1,-1),(0,-1),(1,-1),(1,0),(0,0),(-1,1),(0,1),(1,1)]
 PHYSICS_TILES = {'store','machine','fruit'}
+INTERACTION_TILES = {'tree'}
 
 class Tilemap:
     def __init__(self,game, tile_size=16):
@@ -8,6 +9,7 @@ class Tilemap:
         self.tile_size = tile_size
         self.tilemap = {}
         self.offgrid_tiles = []
+        self.last_tree= set()
 
         for i in range(20):
             self.tilemap[str(0+i)+';14'] = {'type': 'store','variant':1,'pos':(0+i,14)}
@@ -16,7 +18,7 @@ class Tilemap:
         for i in range(18):
             self.tilemap[str(3+i)+';4'] = {'type': 'fruit','variant':1,'pos':(3+i,4)}
         for i in range(3):
-            self.tilemap[str(9+(i*4))+';1'] = {'type': 'tree','variant':i,'pos':(9+(i*4),1)}  
+            self.tilemap[str(9+(i*4))+';1'] = {'type': 'tree','variant':1,'pos':(9+(i*4),1),'collected':False}  
             
     
     def tiles_around(self,pos):
@@ -33,6 +35,14 @@ class Tilemap:
         for tile in self.tiles_around(pos):
             if tile['type'] in PHYSICS_TILES:
                 rects.append(pygame.Rect(tile['pos'][0] * self.tile_size, tile['pos'][1]*self.tile_size,self.tile_size,self.tile_size))
+        return rects 
+    
+    def interaction_reacts_around(self,pos):
+        rects = []
+        for tile in self.tiles_around(pos):
+            if tile['type'] in INTERACTION_TILES:
+                self.last_tree = str(tile['pos'][0])+';'+str(tile['pos'][1])
+                rects.append(pygame.Rect(tile['pos'][0] * self.tile_size, tile['pos'][1]*self.tile_size,48,48))
         return rects 
 
     def render(self,surf):
