@@ -18,24 +18,31 @@ class Tilemap:
         
         # Platforms
         for i in range(5):
-            self.tilemap[f'{2+i};9'] = {'type': 'machine', 'variant': 1, 'pos': (2+i, 9)}
+            self.tilemap[f'{2+i};9'] = {'type': 'machine', 'variant': 1, 'pos': (2+i, 10)}
         
         for i in range(4):
-            self.tilemap[f'{10+i};6'] = {'type': 'machine', 'variant': 1, 'pos': (10+i, 6)}
+            self.tilemap[f'{10+i};8'] = {'type': 'machine', 'variant': 1, 'pos': (10+i, 8)}
         
         # Fruits
         for i in range(3):
             self.tilemap[f'{5+i};4'] = {'type': 'fruit', 'variant': 1, 'pos': (5+i, 4)}
         
         for i in range(3):
-            self.tilemap[f'{13+i};2'] = {'type': 'fruit', 'variant': 1, 'pos': (13+i, 2)}
+            self.tilemap[f'{13+i};2'] = {'type': 'fruit', 'variant': 1, 'pos': (13+i, 3)}
         
         # Trees (interactive)
-        for i in range(3):
-            self.tilemap[f'{9+(i*4)};1'] = {
+        for i in range(2):
+            self.tilemap[f'{1+(i*4)};7'] = {
                 'type': 'tree', 
                 'variant': 1, 
-                'pos': (9+(i*4), 1), 
+                'pos': (1+(i*4), 7), 
+                'collected': False
+            }
+        for i in range(1):
+            self.tilemap[f'{13+(i*4)};0'] = {
+                'type': 'tree', 
+                'variant': 1, 
+                'pos': (13+(i*4), 0), 
                 'collected': False
             }
     
