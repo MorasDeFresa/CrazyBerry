@@ -12,7 +12,7 @@ class PhysicsEntity:
         self.collisions = {'up': False, 'down': False, 'right': False, 'left': False}
         self.bag = []
         self.interaction = False
-        self.direction = 1  # 1 for right, -1 for left
+        self.direction = 1  
         self.animation_frame = 0
         self.animation_speed = 0.1
 
@@ -23,25 +23,25 @@ class PhysicsEntity:
         self.collisions = {'up': False, 'down': False, 'right': False, 'left': False}
         self.interaction = False
         
-        # Update animation frame if we have multiple frames
+        
         if isinstance(self.game.assets[self.type], list) and len(self.game.assets[self.type]) > 1:
             self.animation_frame += self.animation_speed
             if self.animation_frame >= len(self.game.assets[self.type]):
                 self.animation_frame = 0
         
-        # Update movement direction
+        
         if movement[0] > 0:
             self.direction = 1
         elif movement[0] < 0:
             self.direction = -1
         
-        # Apply gravity
+        
         self.velocity[1] = min(5, self.velocity[1] + 0.1)
         
-        # Calculate frame movement
+    
         frame_movement = (movement[0] + self.velocity[0], movement[1] + self.velocity[1])
         
-        # Handle horizontal collisions
+        
         self.pos[0] += frame_movement[0]
         entity_rect = self.rect()
         for rect in tilemap.physics_reacts_around(self.pos):
@@ -54,7 +54,7 @@ class PhysicsEntity:
                     self.collisions['left'] = True  
                 self.pos[0] = entity_rect.x
         
-        # Handle vertical collisions
+        
         self.pos[1] += frame_movement[1]
         entity_rect = self.rect()
         for rect in tilemap.physics_reacts_around(self.pos):
@@ -67,23 +67,22 @@ class PhysicsEntity:
                     self.collisions['up'] = True 
                 self.pos[1] = entity_rect.y
 
-        # Reset vertical velocity if on ground or hitting ceiling
+        
         if self.collisions['down'] or self.collisions['up']:
             self.velocity[1] = 0
         
-        # Check for interactions
+        
         for rect in tilemap.interaction_reacts_around(self.pos):
             if entity_rect.colliderect(rect):
                 self.interaction = True
 
     def render(self, surf):
-        # Get the correct image based on animation frame
         if isinstance(self.game.assets[self.type], list):
             image = self.game.assets[self.type][int(self.animation_frame) % len(self.game.assets[self.type])]
         else:
             image = self.game.assets[self.type]
             
-        # Flip image based on direction
+        
         if self.direction < 0:
             image = pygame.transform.flip(image, True, False)
         surf.blit(image, self.pos)
@@ -107,7 +106,7 @@ class PhysicsEntity:
 class Enemy(PhysicsEntity):
     def __init__(self, game, e_type, pos, size, behavior, patrol_range=None):
         super().__init__(game, e_type, pos, size)
-        self.behavior = behavior  # "patrol", "chase", "static"
+        self.behavior = behavior  
         self.patrol_range = patrol_range
         self.patrol_direction = 1
         self.chase_range = 100
@@ -117,7 +116,7 @@ class Enemy(PhysicsEntity):
         movement = [0, 0]
         
         if self.behavior == "patrol" and self.patrol_range:
-            # Patrol between two points
+            
             if self.pos[0] <= self.patrol_range[0]:
                 self.patrol_direction = 1
             elif self.pos[0] >= self.patrol_range[1]:
@@ -125,7 +124,6 @@ class Enemy(PhysicsEntity):
             movement[0] = self.patrol_direction * self.speed
         
         elif self.behavior == "chase" and player_pos:
-            # Chase player if in range
             distance = math.sqrt((player_pos[0] - self.pos[0])**2 + (player_pos[1] - self.pos[1])**2)
             if distance < self.chase_range:
                 if player_pos[0] < self.pos[0]:

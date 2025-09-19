@@ -11,9 +11,9 @@ def load_image(path):
         return img
     except:
         print(f"Warning: Could not load image {BASE_IMG_PATH + path}")
-        # Create a placeholder image
+        
         surf = pygame.Surface((16, 16))
-        surf.fill((255, 0, 255))  # Magenta placeholder
+        surf.fill((255, 0, 255))  
         return surf
 
 def load_images(path):
@@ -24,9 +24,9 @@ def load_images(path):
                 images.append(load_image(path + '/' + img_name))
     except FileNotFoundError:
         print(f"Warning: Could not load images from {BASE_IMG_PATH + path}")
-        # Create a placeholder image
+        
         surf = pygame.Surface((16, 16))
-        surf.fill((255, 0, 255))  # Magenta placeholder
+        surf.fill((255, 0, 255))  
         images.append(surf)
     return images
 

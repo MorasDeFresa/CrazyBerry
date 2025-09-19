@@ -20,11 +20,11 @@ class Menu:
         return None
     
     def render(self, surf):
-        # Draw title
+        
         title_text = self.font_large.render(self.title, True, (255, 255, 255))
         surf.blit(title_text, (surf.get_width()//2 - title_text.get_width()//2, 50))
         
-        # Draw options
+        
         for i, option in enumerate(self.options):
             color = (255, 0, 0) if i == self.selected_option else (255, 255, 255)
             option_text = self.font_small.render(option, True, color)
@@ -35,15 +35,15 @@ class GameOverMenu(Menu):
         super().__init__(game, "Game Over", ["Restart", "Quit to Menu"])
     
     def render(self, surf):
-        # Draw title
+        
         title_text = self.font_large.render(self.title, True, (255, 0, 0))
         surf.blit(title_text, (surf.get_width()//2 - title_text.get_width()//2, 50))
         
-        # Draw score
+        
         score_text = self.font_small.render(f"Final Score: {self.game.score}", True, (255, 255, 255))
         surf.blit(score_text, (surf.get_width()//2 - score_text.get_width()//2, 100))
         
-        # Draw options
+        
         for i, option in enumerate(self.options):
             color = (255, 0, 0) if i == self.selected_option else (255, 255, 255)
             option_text = self.font_small.render(option, True, color)

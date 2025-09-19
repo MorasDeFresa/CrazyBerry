@@ -11,26 +11,25 @@ class Tilemap:
         self.offgrid_tiles = []
         self.last_tree = set()
 
-        # Create a more interesting level layout
-        # Ground
+        
         for i in range(20):
             self.tilemap[f'{i};14'] = {'type': 'store', 'variant': 1, 'pos': (i, 14)}
         
-        # Platforms
+
         for i in range(5):
             self.tilemap[f'{2+i};9'] = {'type': 'machine', 'variant': 1, 'pos': (2+i, 10)}
         
         for i in range(4):
             self.tilemap[f'{10+i};8'] = {'type': 'machine', 'variant': 1, 'pos': (10+i, 8)}
         
-        # Fruits
+        
         for i in range(3):
             self.tilemap[f'{5+i};4'] = {'type': 'fruit', 'variant': 1, 'pos': (5+i, 4)}
         
         for i in range(3):
             self.tilemap[f'{13+i};2'] = {'type': 'fruit', 'variant': 1, 'pos': (13+i, 3)}
         
-        # Trees (interactive)
+        
         for i in range(2):
             self.tilemap[f'{1+(i*4)};7'] = {
                 'type': 'tree', 
@@ -81,7 +80,7 @@ class Tilemap:
         return rects 
 
     def render(self, surf):
-        # Draw background tiles first
+        
         for loc in self.tilemap:
             tile = self.tilemap[loc]
             if tile['type'] in ['store', 'machine']:
@@ -90,7 +89,7 @@ class Tilemap:
                     (tile['pos'][0] * self.tile_size, tile['pos'][1] * self.tile_size)
                 )
         
-        # Draw interactive elements on top
+        
         for loc in self.tilemap:
             tile = self.tilemap[loc]
             if tile['type'] in ['fruit', 'tree']:
@@ -100,6 +99,6 @@ class Tilemap:
                         (tile['pos'][0] * self.tile_size, tile['pos'][1] * self.tile_size)
                     )
         
-        # Draw off-grid tiles
+        
         for tile in self.offgrid_tiles:
             surf.blit(self.game.assets[tile['type']][tile['variant']], tile['pos'])
